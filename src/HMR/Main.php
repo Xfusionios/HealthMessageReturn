@@ -28,15 +28,15 @@ $this->getServer()->getPluginManager()->registerEvents($this,$this);
         $cause = $event->getEntity()->getLastDamageCause();
         if($cause instanceof EntityDamageByEntityEvent) {
             $player = $event->getEntity();
-            $killer = $event->getEntity()->getLastDamageCause()->getDamager();
-            $fizz = new FizzSound($killer);
-            $bat = new BatSound($player);
-$player->sendMessage(TextFormat::RED.$killer->getName() . TextFormat::GOLD." Killed you with " .TextFormat::LIGHT_PURPLE.$killer->getHealth().TextFormat::RED." hearts left and while using ".TextFormat::BLUE.$killer->getInventory()->getItemInHand()."!");
-$player->getLevel()->addSound($bat);
-if($killer instanceof Player) {
- $killer->sendMessage(TextFormat::GREEN."You Killed ".$player->getName()."!");
- $killer->getLevel()->addSound($fizz);
-				}
+            $killer = $cause->getDamager();
+            if($killer instanceof Player) {
+            	$fizz = new FizzSound($killer);
+            	$bat = new BatSound($player);
+	    	$player->sendMessage(TextFormat::RED.$killer->getName() . TextFormat::GOLD." Killed you with " .TextFormat::LIGHT_PURPLE.$killer->getHealth().TextFormat::RED." hearts left and while using ".TextFormat::BLUE.$killer->getInventory()->getItemInHand()."!");
+  	    	$player->getLevel()->addSound($bat);
+	    	$killer->sendMessage(TextFormat::GREEN."You Killed ".$player->getName()."!");
+	    	$killer->getLevel()->addSound($fizz);
+		}
             }
         }
 
